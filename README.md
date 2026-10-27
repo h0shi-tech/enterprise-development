@@ -28,8 +28,41 @@
 - Набор тестовых данных в памяти: 14 пород, 13 специализаций, 12 владельцев, 16 питомцев,
   13 врачей и 31 запись на приём.
 - Пять аналитических запросов на LINQ, оформленных в виде unit-тестов, и проверки самого
-  набора данных — всего 27 тестов.
+  набора данных.
 - Запуск сборки и тестов в GitHub Actions.
+
+## Реализовано в лабораторной 2
+
+Сервер на ASP.NET Core отдаёт CRUD по сущностям первой лабораторной и те же аналитические
+запросы. Данные по-прежнему лежат в памяти, стартовый набор берётся из `VetClinicSeedData`.
+
+Биологический вид у породы и специализации хранится как nullable и обязателен при создании.
+Так пропущенное значение не превращается в первый элемент перечисления.
+
+Новый идентификатор берётся из счётчика, который увеличивается при создании. Удалённый номер
+повторно не выдаётся.
+
+Запуск:
+
+```
+dotnet run --project src/VetClinic.Api
+```
+
+Swagger: `http://localhost:5081/swagger`.
+
+| Метод | Маршрут |
+| --- | --- |
+| CRUD | `/api/breeds`, `/api/specializations`, `/api/owners`, `/api/pets`, `/api/veterinarians`, `/api/appointments` |
+| Связанные коллекции | `/api/owners/{id}/pets`, `/api/pets/{id}/appointments`, `/api/veterinarians/{id}/appointments`, `/api/veterinarians/{id}/pets`, `/api/specializations/{id}/veterinarians`, `/api/species/{species}/breeds`, `/api/species/{species}/specializations`, `/api/species/{species}/veterinarians` |
+| Врачи выбранного вида | `GET /api/analytics/veterinarians?species=Cat` |
+| Питомцы выбранного врача, по кличке | `GET /api/analytics/veterinarians/{id}/pets` |
+| Число повторных приёмов породы | `GET /api/analytics/breeds/{id}/follow-ups` |
+| Владельцы с несколькими питомцами | `GET /api/analytics/owners/with-several-pets` |
+| Приёмы текущего месяца в кабинете | `GET /api/analytics/appointments?roomNumber=101` |
+
+Текущий месяц считается по локальному времени процесса. В наборе данных приёмы сентября 2026
+года подобраны под опорную дату `VetClinicSeedData.ReferenceDate`, поэтому unit-тест этого
+запроса фиксирует время на 15 сентября 2026.
 
 ## Структура решения
 
@@ -40,6 +73,11 @@ src/VetClinic.Domain/             доменная библиотека
     Entities/                     сущности предметной области
     Enums/                        перечисления
     Data/                         набор тестовых данных
+    Interfaces/                   интерфейсы репозиториев
+src/VetClinic.Contracts/          DTO и интерфейсы служб
+src/VetClinic.Application/        службы приложения
+src/VetClinic.Infrastructure.InMemory/  репозитории в памяти
+src/VetClinic.Api/                ASP.NET Core хост
 tests/VetClinic.Tests/            unit-тесты на xUnit v3
 ```
 
@@ -78,15 +116,7 @@ tests/VetClinic.Tests/            unit-тесты на xUnit v3
 ```
 dotnet build VetClinic.slnx --configuration Release
 dotnet test --solution VetClinic.slnx --configuration Release --no-build
+dotnet run --project src/VetClinic.Api
 ```
 
 Тесты используют Microsoft Testing Platform, поэтому решение и передаётся ключом `--solution`.
-Результат прогона:
-
-```
-Test run summary: Passed!
-  total: 27
-  failed: 0
-  succeeded: 27
-  skipped: 0
-```
