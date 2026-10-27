@@ -18,7 +18,8 @@ public class Breed
     public required string Name { get; set; }
 
     /// <summary>
-    /// Биологический вид, к которому относится порода
+    /// Биологический вид, к которому относится порода.
+    /// Nullable и обязателен при создании: иначе пропущенное значение станет первым элементом перечисления
     /// </summary>
-    public AnimalSpecies Species { get; set; }
+    public required AnimalSpecies? Species { get; set; }
 }

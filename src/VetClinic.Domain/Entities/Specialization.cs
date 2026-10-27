@@ -18,7 +18,8 @@ public class Specialization
     public required string Name { get; set; }
 
     /// <summary>
-    /// Биологический вид животных, который принимает врач с этой специализацией
+    /// Биологический вид животных, который принимает врач с этой специализацией.
+    /// Nullable и обязателен при создании: иначе пропущенное значение станет первым элементом перечисления
     /// </summary>
-    public AnimalSpecies Species { get; set; }
+    public required AnimalSpecies? Species { get; set; }
 }

@@ -1,4 +1,5 @@
 using VetClinic.Domain.Data;
+using VetClinic.Domain.Enums;
 
 namespace VetClinic.Tests;
 
@@ -59,6 +60,6 @@ public class VetClinicSeedDataTests(VetClinicSeedData seed) : IClassFixture<VetC
     {
         Assert.All(
             seed.Appointments,
-            appointment => Assert.Equal(appointment.Veterinarian.Specialization.Species, appointment.Pet.Species));
+            appointment => Assert.Equal<AnimalSpecies?>(appointment.Pet.Species, appointment.Veterinarian.Specialization.Species));
     }
 }

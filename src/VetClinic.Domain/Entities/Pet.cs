@@ -40,5 +40,6 @@ public class Pet
     /// <summary>
     /// Биологический вид животного; определяется породой
     /// </summary>
-    public AnimalSpecies Species => Breed.Species;
+    public AnimalSpecies Species => Breed.Species
+        ?? throw new InvalidOperationException("У породы не указан биологический вид.");
 }

@@ -1,0 +1,34 @@
+@VetClinic.Api_HostAddress = http://localhost:5081
+
+GET {{VetClinic.Api_HostAddress}}/api/breeds
+Accept: application/json
+
+###
+
+POST {{VetClinic.Api_HostAddress}}/api/breeds
+Content-Type: application/json
+
+{
+  "name": "Мопс",
+  "species": "Dog"
+}
+
+###
+
+GET {{VetClinic.Api_HostAddress}}/api/analytics/veterinarians?species=Cat
+Accept: application/json
+
+###
+
+GET {{VetClinic.Api_HostAddress}}/api/analytics/owners/with-several-pets
+Accept: application/json
+
+###
+
+GET {{VetClinic.Api_HostAddress}}/api/analytics/appointments?roomNumber=101
+Accept: application/json
+
+###
+
+GET {{VetClinic.Api_HostAddress}}/api/owners/1/pets
+Accept: application/json

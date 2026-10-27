@@ -1,6 +1,10 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/VetClinic.Api/VetClinic.Api.csproj" />
+    <Project Path="src/VetClinic.Application/VetClinic.Application.csproj" />
+    <Project Path="src/VetClinic.Contracts/VetClinic.Contracts.csproj" />
     <Project Path="src/VetClinic.Domain/VetClinic.Domain.csproj" />
+    <Project Path="src/VetClinic.Infrastructure.InMemory/VetClinic.Infrastructure.InMemory.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/VetClinic.Tests/VetClinic.Tests.csproj" />
